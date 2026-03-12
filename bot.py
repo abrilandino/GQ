@@ -2,6 +2,7 @@ import discord
 import os
 import asyncio
 import time
+import json
 from aiohttp import web
 
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -15,8 +16,7 @@ TARGET_USERS = [
 
 TEXT_CHANNEL_ID = 1253513612601851970
 COOLDOWN_SECONDS = 300  # 5 minutes
-
-last_sent = {}
+COOLDOWN_FILE = "cooldowns.json"
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -25,10 +25,23 @@ intents.members = True
 
 client = discord.Client(intents=intents)
 
+def load_cooldowns():
+    if os.path.exists(COOLDOWN_FILE):
+        with open(COOLDOWN_FILE, "r") as f:
+            return json.load(f)
+    return {}
+
+def save_cooldowns(data):
+    with open(COOLDOWN_FILE, "w") as f:
+        json.dump(data, f)
+
 def can_send(user_id):
     now = time.time()
-    if user_id not in last_sent or now - last_sent[user_id] >= COOLDOWN_SECONDS:
-        last_sent[user_id] = now
+    data = load_cooldowns()
+    key = str(user_id)
+    if key not in data or now - data[key] >= COOLDOWN_SECONDS:
+        data[key] = now
+        save_cooldowns(data)
         return True
     return False
 
