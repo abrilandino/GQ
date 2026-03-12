@@ -1,6 +1,7 @@
 import discord
 import os
 import asyncio
+import time
 from aiohttp import web
 
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -13,6 +14,9 @@ TARGET_USERS = [
 ]
 
 TEXT_CHANNEL_ID = 1253513612601851970
+COOLDOWN_SECONDS = 300  # 5 minutes
+
+last_sent = {}
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -20,6 +24,13 @@ intents.voice_states = True
 intents.members = True
 
 client = discord.Client(intents=intents)
+
+def can_send(user_id):
+    now = time.time()
+    if user_id not in last_sent or now - last_sent[user_id] >= COOLDOWN_SECONDS:
+        last_sent[user_id] = now
+        return True
+    return False
 
 @client.event
 async def on_ready():
@@ -29,7 +40,7 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot:
         return
-    if message.author.id in TARGET_USERS:
+    if message.author.id in TARGET_USERS and can_send(message.author.id):
         channel = client.get_channel(TEXT_CHANNEL_ID)
         if channel:
             await channel.send(f"Se cree gran culo esa maje {message.author.mention}")
@@ -38,7 +49,7 @@ async def on_message(message):
 async def on_voice_state_update(member, before, after):
     if member.id not in TARGET_USERS:
         return
-    if before.channel is None and after.channel is not None:
+    if before.channel is None and after.channel is not None and can_send(member.id):
         channel = client.get_channel(TEXT_CHANNEL_ID)
         if channel:
             await channel.send(f"Se cree gran culo esa maje {member.mention}")
