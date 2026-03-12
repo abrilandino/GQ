@@ -147,36 +147,3 @@ EXPOSE $PORT
 
 # Define the command to start your application
 CMD ["python", "bot.py"]
-
-```
-
-
-fly.toml
-
-
-```
-# fly.toml app configuration file generated for gqbot on 2026-03-12T03:57:10Z
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
-app = 'gqbot'
-primary_region = 'dfw'
-
-[build]
-
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
-
-[[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
-  cpus = 1
-  memory_mb = 1024
-
-```
