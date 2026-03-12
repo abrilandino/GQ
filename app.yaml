@@ -1,0 +1,10 @@
+runtime: python311  # Python 3.11
+entrypoint: python bot.py
+
+instance_class: F1  # free tier instance
+automatic_scaling:
+  min_instances: 1  # ensures 24/7 uptime (free if within free tier)
+  max_instances: 1
+
+env_variables:
+  DISCORD_TOKEN: "YOUR_DISCORD_BOT_TOKEN"
