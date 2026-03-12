@@ -9,7 +9,7 @@ TARGET_USERS = [
     540286026258710569 # user id 3 david
 ]
 
-TEXT_CHANNEL_ID = 333333333333333333  # replace with your text channel ID
+TEXT_CHANNEL_ID = 1253513612601851970  # replace with your text channel ID
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -40,3 +40,4 @@ async def on_voice_state_update(member, before, after):
 
 
 client.run(TOKEN)
+
