@@ -1,15 +1,18 @@
 import discord
 import os
+import asyncio
+from aiohttp import web
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 TARGET_USERS = [
-    718180397942571109,  # replace with first user ID cervantes
-    606986226750455820,  # replace with second user ID ena
-    540286026258710569 # user id 3 david
+    718180397942571109,  # cervantes
+    606986226750455820,  # ena
+    540286026258710569,  # david
+    709522241230078002   # user id 4
 ]
 
-TEXT_CHANNEL_ID = 1253513612601851970  # replace with your text channel ID
+TEXT_CHANNEL_ID = 1253513612601851970
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -27,7 +30,9 @@ async def on_message(message):
     if message.author.bot:
         return
     if message.author.id in TARGET_USERS:
-        await message.channel.send(f"Se cree gran culo esa maje {message.author.mention}")
+        channel = client.get_channel(TEXT_CHANNEL_ID)
+        if channel:
+            await channel.send(f"Se cree gran culo esa maje {message.author.mention}")
 
 @client.event
 async def on_voice_state_update(member, before, after):
@@ -38,5 +43,19 @@ async def on_voice_state_update(member, before, after):
         if channel:
             await channel.send(f"Se cree gran culo esa maje {member.mention}")
 
+async def health(request):
+    return web.Response(text="OK")
 
-client.run(TOKEN)
+async def start_web():
+    app = web.Application()
+    app.router.add_get("/", health)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", 8000)
+    await site.start()
+
+async def main():
+    await start_web()
+    await client.start(TOKEN)
+
+asyncio.run(main())
