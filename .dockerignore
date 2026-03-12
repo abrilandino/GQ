@@ -1,4 +1,4 @@
-# Python cache files
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
@@ -52,15 +52,6 @@ coverage.xml
 # pyenv
 .python-version
 
-# Project files
-.git
-.gitignore
-.dockerignore
-Dockerfile
-fly.toml
-README.md
-docs/
-
 # IDEs
 .vscode/
 .idea/
@@ -73,10 +64,14 @@ docs/
 .env.local
 .env.*.local
 
-# Logs
+# Logs and temp
 *.log
 logs/
-
-# Temporary files
 tmp/
 temp/
+
+# Git and deployment configs
+.git
+.gitignore
+fly.toml
+README.md
