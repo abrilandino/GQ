@@ -4,8 +4,9 @@ import os
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 TARGET_USERS = [
-    111111111111111111,  # replace with first user ID
-    222222222222222222   # replace with second user ID
+    718180397942571109,  # replace with first user ID cervantes
+    606986226750455820,  # replace with second user ID ena
+    540286026258710569 # user id 3 david
 ]
 
 TEXT_CHANNEL_ID = 333333333333333333  # replace with your text channel ID
@@ -36,5 +37,6 @@ async def on_voice_state_update(member, before, after):
         channel = client.get_channel(TEXT_CHANNEL_ID)
         if channel:
             await channel.send(f"Se cree gran culo esa maje {member.mention}")
+
 
 client.run(TOKEN)
