@@ -9,7 +9,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 
 TARGET_USERS = [
     718180397942571109,  # cervantes
-    #606986226750455820,  # ena
+    606986226750455820,  # ena
     540286026258710569 #,  # david
     #709522241230078002   # user id 4
 ]
